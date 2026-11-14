@@ -1,0 +1,330 @@
+[
+  {
+    "case_id": "AUTH-401",
+    "title": "Expired or invalid access token",
+    "description": "A read request is rejected with HTTP 401.",
+    "event": {
+      "timestamp": "2026-11-14T09:00:00Z",
+      "method": "GET",
+      "endpoint": "https://api.acme.test/v1/orders/123?access_token=FAKE_SECRET",
+      "request_headers": {
+        "Authorization": "Bearer synthetic-token-value-123456",
+        "Accept": "application/json",
+        "X-Correlation-ID": "CORR-AUTH-1001"
+      },
+      "request_payload": null,
+      "correlation_id": null,
+      "status_code": 401,
+      "latency_ms": 42,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Invalid or expired bearer token",
+      "error_message": "authentication failed: token expired or invalid"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:00:10Z",
+        "endpoint": "/v1/orders/{id}",
+        "p95_latency_ms": 120,
+        "error_rate_pct": 0.2,
+        "request_rate_rps": 12,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 85
+      }
+    ],
+    "error_message": "authentication failed: token expired or invalid",
+    "expected_category": "authentication",
+    "expected_top_cause": "authentication",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "AUTHZ-403",
+    "title": "Missing Orders read scope",
+    "description": "A valid principal lacks the required orders:read scope.",
+    "event": {
+      "timestamp": "2026-11-14T09:05:00Z",
+      "method": "GET",
+      "endpoint": "/v1/orders/456",
+      "request_headers": {
+        "Authorization": "Bearer synthetic-token-abcdef123456",
+        "X-Correlation-ID": "CORR-AUTHZ-1002"
+      },
+      "request_payload": null,
+      "correlation_id": null,
+      "status_code": 403,
+      "latency_ms": 38,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Forbidden: insufficient scope",
+      "error_message": "insufficient scope orders:read"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:05:05Z",
+        "endpoint": "/v1/orders/{id}",
+        "p95_latency_ms": 130,
+        "error_rate_pct": 0.3,
+        "request_rate_rps": 10,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 90
+      }
+    ],
+    "error_message": "insufficient scope orders:read",
+    "expected_category": "authorization",
+    "expected_top_cause": "authorization",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "VALID-422",
+    "title": "Order request fails schema validation",
+    "description": "A POST request has an invalid currency field and missing required order items.",
+    "event": {
+      "timestamp": "2026-11-14T09:10:00Z",
+      "method": "POST",
+      "endpoint": "/v1/orders",
+      "request_headers": {
+        "Content-Type": "application/json",
+        "X-Correlation-ID": "CORR-VAL-1003"
+      },
+      "request_payload": {
+        "customer_id": "CUST-REDACTED",
+        "currency": "US",
+        "items": []
+      },
+      "correlation_id": null,
+      "status_code": 422,
+      "latency_ms": 26,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Validation error: currency must be 3 uppercase letters; items must not be empty",
+      "error_message": "schema validation failed for currency and items"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:10:02Z",
+        "endpoint": "/v1/orders",
+        "p95_latency_ms": 150,
+        "error_rate_pct": 0.4,
+        "request_rate_rps": 6,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 80
+      }
+    ],
+    "error_message": "schema validation failed for currency and items",
+    "expected_category": "validation",
+    "expected_top_cause": "validation",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "RATE-429",
+    "title": "API quota exceeded",
+    "description": "A burst of traffic exhausts the per-minute request quota.",
+    "event": {
+      "timestamp": "2026-11-14T09:15:00Z",
+      "method": "GET",
+      "endpoint": "/v1/orders",
+      "request_headers": {
+        "X-Correlation-ID": "CORR-RATE-1004",
+        "Accept": "application/json"
+      },
+      "request_payload": null,
+      "correlation_id": null,
+      "status_code": 429,
+      "latency_ms": 12,
+      "response_headers": {
+        "Retry-After": "45",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "0",
+        "Content-Type": "application/json"
+      },
+      "response_message": "Too many requests: quota exceeded",
+      "error_message": "rate limit quota exceeded; retry after 45 seconds"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:15:03Z",
+        "endpoint": "/v1/orders",
+        "p95_latency_ms": 300,
+        "error_rate_pct": 18.0,
+        "request_rate_rps": 35,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 100
+      },
+      {
+        "timestamp": "2026-11-14T09:00:00Z",
+        "endpoint": "/v1/orders",
+        "p95_latency_ms": 120,
+        "error_rate_pct": 0.5,
+        "request_rate_rps": 8,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 90
+      }
+    ],
+    "error_message": "rate limit quota exceeded; retry after 45 seconds",
+    "expected_category": "rate_limiting",
+    "expected_top_cause": "rate_limiting",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "TIME-504",
+    "title": "Gateway timeout waiting for order service",
+    "description": "A gateway timeout coincides with elevated endpoint and dependency latency.",
+    "event": {
+      "timestamp": "2026-11-14T09:20:00Z",
+      "method": "GET",
+      "endpoint": "/v1/orders/789",
+      "request_headers": {
+        "X-Correlation-ID": "CORR-TIME-1005"
+      },
+      "request_payload": null,
+      "correlation_id": null,
+      "status_code": 504,
+      "latency_ms": 5000,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Gateway timeout waiting for upstream response",
+      "error_message": "upstream request timed out; deadline exceeded"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:20:05Z",
+        "endpoint": "/v1/orders/{id}",
+        "p95_latency_ms": 3200,
+        "error_rate_pct": 9.0,
+        "request_rate_rps": 12,
+        "dependency_error_rate_pct": 4.0,
+        "dependency_p95_latency_ms": 2800
+      },
+      {
+        "timestamp": "2026-11-14T09:00:00Z",
+        "endpoint": "/v1/orders/{id}",
+        "p95_latency_ms": 150,
+        "error_rate_pct": 0.2,
+        "request_rate_rps": 10,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 100
+      }
+    ],
+    "error_message": "upstream request timed out; deadline exceeded",
+    "expected_category": "timeout",
+    "expected_top_cause": "timeout",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "DEP-503",
+    "title": "Upstream dependency unavailable",
+    "description": "Gateway reports connection refusal from the inventory dependency.",
+    "event": {
+      "timestamp": "2026-11-14T09:25:00Z",
+      "method": "POST",
+      "endpoint": "/v1/orders",
+      "request_headers": {
+        "Content-Type": "application/json",
+        "X-Correlation-ID": "CORR-DEP-1006"
+      },
+      "request_payload": {
+        "customer_id": "CUST-REDACTED",
+        "items": [
+          {
+            "sku": "SKU-1",
+            "quantity": 1
+          }
+        ],
+        "currency": "USD"
+      },
+      "correlation_id": null,
+      "status_code": 503,
+      "latency_ms": 310,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Service unavailable: upstream connection refused",
+      "error_message": "upstream connection refused from inventory service"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:25:02Z",
+        "endpoint": "/v1/orders",
+        "p95_latency_ms": 1100,
+        "error_rate_pct": 12.0,
+        "request_rate_rps": 9,
+        "dependency_error_rate_pct": 8.0,
+        "dependency_p95_latency_ms": 1400
+      }
+    ],
+    "error_message": "upstream connection refused from inventory service",
+    "expected_category": "dependency_error",
+    "expected_top_cause": "dependency_error",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "SERVER-500",
+    "title": "Unexpected application exception",
+    "description": "A server-side exception is returned without enough trace detail to confirm the root cause.",
+    "event": {
+      "timestamp": "2026-11-14T09:30:00Z",
+      "method": "POST",
+      "endpoint": "/v1/orders",
+      "request_headers": {
+        "Content-Type": "application/json",
+        "X-Correlation-ID": "CORR-SERVER-1007"
+      },
+      "request_payload": {
+        "customer_id": "CUST-REDACTED",
+        "items": [
+          {
+            "sku": "SKU-2",
+            "quantity": 1
+          }
+        ],
+        "currency": "USD"
+      },
+      "correlation_id": null,
+      "status_code": 500,
+      "latency_ms": 240,
+      "response_headers": {
+        "Content-Type": "application/json"
+      },
+      "response_message": "Internal server error",
+      "error_message": "unexpected application exception"
+    },
+    "metrics": [
+      {
+        "timestamp": "2026-11-14T09:30:03Z",
+        "endpoint": "/v1/orders",
+        "p95_latency_ms": 280,
+        "error_rate_pct": 7.0,
+        "request_rate_rps": 8,
+        "dependency_error_rate_pct": 0,
+        "dependency_p95_latency_ms": 90
+      }
+    ],
+    "error_message": "unexpected application exception",
+    "expected_category": "server_error",
+    "expected_top_cause": "server_error",
+    "correlation_window_seconds": 300
+  },
+  {
+    "case_id": "UNKNOWN-008",
+    "title": "Incomplete incident evidence",
+    "description": "An intermittent failure is reported without status code, timestamp, metrics or relevant API documentation. The assistant must preserve uncertainty rather than invent a cause.",
+    "event": {
+      "method": "GET",
+      "endpoint": "/v1/legacy/report",
+      "error_message": "intermittent failure reported by caller; no response status captured",
+      "request_headers": {
+        "X-Correlation-ID": "CORR-UNKNOWN-1008"
+      }
+    },
+    "metrics": [],
+    "error_message": "intermittent failure reported by caller; no response status captured",
+    "documentation_available": false,
+    "expected_category": "unknown",
+    "expected_top_cause": "unknown",
+    "correlation_window_seconds": 300
+  }
+]

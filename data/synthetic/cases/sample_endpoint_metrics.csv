@@ -1,0 +1,10 @@
+dependency_error_rate_pct,dependency_p95_latency_ms,endpoint,error_rate_pct,p95_latency_ms,request_rate_rps,timestamp
+0,85,/v1/orders/{id},0.2,120,12,2026-11-14T09:00:10Z
+0,90,/v1/orders/{id},0.3,130,10,2026-11-14T09:05:05Z
+0,80,/v1/orders,0.4,150,6,2026-11-14T09:10:02Z
+0,100,/v1/orders,18.0,300,35,2026-11-14T09:15:03Z
+0,90,/v1/orders,0.5,120,8,2026-11-14T09:00:00Z
+4.0,2800,/v1/orders/{id},9.0,3200,12,2026-11-14T09:20:05Z
+0,100,/v1/orders/{id},0.2,150,10,2026-11-14T09:00:00Z
+8.0,1400,/v1/orders,12.0,1100,9,2026-11-14T09:25:02Z
+0,90,/v1/orders,7.0,280,8,2026-11-14T09:30:03Z

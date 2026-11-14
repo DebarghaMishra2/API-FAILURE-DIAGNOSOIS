@@ -1,0 +1,14 @@
+GATEWAY AND SERVER ERROR GUIDANCE
+Version: 1.2
+Effective Date: 2026-02-10
+Owner: API Reliability Engineering
+Status: approved
+Product: Acme API Gateway
+
+HTTP 500 Internal Server Error indicates an unexpected server-side condition. Inspect application exception logs and trace spans using a redacted correlation identifier. A single 500 does not by itself establish the underlying root cause.
+
+HTTP 502 Bad Gateway and HTTP 503 Service Unavailable can indicate an upstream dependency or gateway problem. Correlate the endpoint with dependency error rate and dependency latency for the same time window. Check whether other endpoints using the same dependency show similar failures.
+
+HTTP 504 Gateway Timeout indicates that the gateway did not receive a timely upstream response. Compare client, gateway and dependency timeouts, and inspect trace spans. Do not amplify load with repeated retries.
+
+Production restarts, routing changes, credential operations, configuration changes and recovery actions must be performed only by authorized operators under change control. This guide recommends read-only verification only.

@@ -1,0 +1,7 @@
+AUTH-401: authentication failed: token expired or invalid
+AUTHZ-403: insufficient scope orders:read
+VALID-422: schema validation failed for currency and items
+RATE-429: rate limit quota exceeded; retry after 45 seconds
+TIME-504: upstream request timed out; deadline exceeded
+DEP-503: upstream connection refused from inventory service
+SERVER-500: unexpected application exception

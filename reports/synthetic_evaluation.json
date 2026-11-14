@@ -1,0 +1,163 @@
+{
+  "summary": {
+    "dataset": "included synthetic scenarios",
+    "cases": 8,
+    "classification_accuracy": 1.0,
+    "expected_cause_top1_accuracy": 1.0,
+    "expected_cause_top3_accuracy": 1.0,
+    "metric_correlation_rate": 0.875,
+    "unknown_cases": 1,
+    "unknown_cases_classified_unknown": 1,
+    "observed_classification_errors": [],
+    "note": "Synthetic, deterministic smoke evaluation only. Do not present these figures as real-world or HCLTech production performance."
+  },
+  "cases": [
+    {
+      "case_id": "AUTH-401",
+      "expected_category": "authentication",
+      "predicted_category": "authentication",
+      "classification_correct": true,
+      "expected_top_cause": "authentication",
+      "ranked_causes": [
+        "authentication",
+        "authorization",
+        "validation",
+        "dependency_error"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "AUTHZ-403",
+      "expected_category": "authorization",
+      "predicted_category": "authorization",
+      "classification_correct": true,
+      "expected_top_cause": "authorization",
+      "ranked_causes": [
+        "authorization",
+        "dependency_error",
+        "authentication",
+        "timeout",
+        "server_error"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "VALID-422",
+      "expected_category": "validation",
+      "predicted_category": "validation",
+      "classification_correct": true,
+      "expected_top_cause": "validation",
+      "ranked_causes": [
+        "validation",
+        "dependency_error",
+        "authorization",
+        "authentication",
+        "timeout"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "RATE-429",
+      "expected_category": "rate_limiting",
+      "predicted_category": "rate_limiting",
+      "classification_correct": true,
+      "expected_top_cause": "rate_limiting",
+      "ranked_causes": [
+        "rate_limiting",
+        "timeout",
+        "dependency_error",
+        "server_error",
+        "authorization"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "TIME-504",
+      "expected_category": "timeout",
+      "predicted_category": "timeout",
+      "classification_correct": true,
+      "expected_top_cause": "timeout",
+      "ranked_causes": [
+        "timeout",
+        "dependency_error",
+        "server_error",
+        "validation",
+        "authorization"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "DEP-503",
+      "expected_category": "dependency_error",
+      "predicted_category": "dependency_error",
+      "classification_correct": true,
+      "expected_top_cause": "dependency_error",
+      "ranked_causes": [
+        "dependency_error",
+        "timeout",
+        "server_error",
+        "rate_limiting",
+        "authorization"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "SERVER-500",
+      "expected_category": "server_error",
+      "predicted_category": "server_error",
+      "classification_correct": true,
+      "expected_top_cause": "server_error",
+      "ranked_causes": [
+        "server_error",
+        "dependency_error",
+        "authorization",
+        "authentication",
+        "validation"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": true,
+      "documentation_retrieved": 5,
+      "secret_redaction_check": "synthetic only"
+    },
+    {
+      "case_id": "UNKNOWN-008",
+      "expected_category": "unknown",
+      "predicted_category": "unknown",
+      "classification_correct": true,
+      "expected_top_cause": "unknown",
+      "ranked_causes": [
+        "unknown"
+      ],
+      "expected_cause_top1": true,
+      "expected_cause_top3": true,
+      "metrics_correlated": false,
+      "documentation_retrieved": 0,
+      "secret_redaction_check": "synthetic only"
+    }
+  ]
+}

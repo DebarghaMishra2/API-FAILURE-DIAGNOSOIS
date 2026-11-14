@@ -1,0 +1,9 @@
+case_id,question,case_type,expected_category,expected_top_cause,expected_metric_correlation,answerable
+AUTH-401,A read request is rejected with HTTP 401.,authentication,authentication,authentication,True,True
+AUTHZ-403,A valid principal lacks the required orders:read scope.,authorization,authorization,authorization,True,True
+VALID-422,A POST request has an invalid currency field and missing required order items.,validation,validation,validation,True,True
+RATE-429,A burst of traffic exhausts the per-minute request quota.,rate_limiting,rate_limiting,rate_limiting,True,True
+TIME-504,A gateway timeout coincides with elevated endpoint and dependency latency.,timeout,timeout,timeout,True,True
+DEP-503,Gateway reports connection refusal from the inventory dependency.,dependency_error,dependency_error,dependency_error,True,True
+SERVER-500,A server-side exception is returned without enough trace detail to confirm the root cause.,server_error,server_error,server_error,True,True
+UNKNOWN-008,"An intermittent failure is reported without status code, timestamp, metrics or relevant API documentation. The assistant must preserve uncertainty rather than invent a cause.",incomplete_unanswerable,unknown,unknown,False,False

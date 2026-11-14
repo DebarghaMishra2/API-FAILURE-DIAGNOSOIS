@@ -1,0 +1,8 @@
+<!doctype html><html><head><title>API Rate Limits</title></head><body>
+<h1>API Rate Limits and Quotas</h1>
+<p>Version: 2.1</p><p>Effective Date: 2026-03-01</p><p>Owner: API Platform Operations</p><p>Status: approved</p><p>Product: Acme Public API</p>
+<h2>Rate limits</h2>
+<p>When a client exceeds a quota, the API returns HTTP 429 Too Many Requests. Responses may include Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers.</p>
+<table><tr><th>Plan</th><th>Limit</th><th>Window</th></tr><tr><td>Developer</td><td>60 requests</td><td>1 minute</td></tr><tr><td>Business</td><td>600 requests</td><td>1 minute</td></tr><tr><td>Enterprise</td><td>Custom approved quota</td><td>1 minute</td></tr></table>
+<h2>Recommended client behaviour</h2><p>Honor Retry-After and use bounded exponential backoff with jitter. Do not issue immediate retry bursts. Quota increases must be requested from the API owner and are outside automated diagnosis scope.</p>
+</body></html>
